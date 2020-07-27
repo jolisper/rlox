@@ -10,7 +10,7 @@ pub fn dissassemble_chunk(chunk: &Chunk, name: &str) {
     }
 }
 
-fn dissassemble_instruction(chunk: &Chunk, offset: usize) -> usize {
+pub fn dissassemble_instruction(chunk: &Chunk, offset: usize) -> usize {
     print!("{:04} ", offset);
     if offset > 0 && chunk.get_line(offset) == chunk.get_line(offset - 1) {
         print!("   | ");
@@ -36,6 +36,6 @@ fn constant_instruction(name: &str, chunk: &Chunk, offset: usize) -> usize {
     return offset + 2;
 }
 
-fn print_value(value: Value) {
+pub fn print_value(value: Value) {
     print!("{:?}", value);
 }

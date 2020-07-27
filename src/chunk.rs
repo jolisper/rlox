@@ -1,7 +1,7 @@
 use crate::value::{init_value_array, write_value_array, Value, ValueArray};
 use std::convert::From;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug)]
 pub enum OpCode {
     OpConstant,
     OpReturn,
