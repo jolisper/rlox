@@ -2,6 +2,8 @@ use crate::chunk::{Chunk, OpCode};
 use crate::debug;
 use crate::value::Value;
 
+const STACK_MAX: usize = 256;
+
 pub enum InterpretResult {
     InterpretOk,
     InterpretCompileError,
@@ -21,6 +23,12 @@ pub struct VM {
     // in Rust is not a safe operation. The Chunk has a
     // complementary get method that receives the offset.
     offset: usize,
+
+    stack: [Value; STACK_MAX],
+    // Since the stack grows and shrinks as values are pushed and popped,
+    // we need to track where the top of the stack is in the array.
+    // stack_top points to where the next value to be pushed will go.
+    stack_top: usize,
 }
 
 impl VM {
@@ -28,6 +36,8 @@ impl VM {
         VM {
             chunk: None,
             offset: 0,
+            stack: [0 as Value; STACK_MAX],
+            stack_top: 0,
         }
     }
 
@@ -41,6 +51,13 @@ impl VM {
         loop {
             #[cfg(feature = "debug-trace-execution")]
             {
+                print!("          ");
+                for i in 0..self.stack_top {
+                    print!("[ ");
+                    debug::print_value(self.stack[i]);
+                    print!(" ]");
+                }
+                println!();
                 debug::dissassemble_instruction(&self.chunk.as_ref().unwrap(), self.offset);
             }
 
@@ -51,11 +68,14 @@ impl VM {
             // implements that instruction’s semantics. This process is called
             // “decoding” or “dispatching” the instruction.
             match opcode {
-                OpCode::OpReturn => return InterpretResult::InterpretOk,
+                OpCode::OpReturn => {
+                    debug::print_value(self.pop());
+                    println!();
+                    return InterpretResult::InterpretOk;
+                }
                 OpCode::OpConstant => {
                     let constant = self.read_constant();
-                    debug::print_value(constant);
-                    println!();
+                    self.push(constant);
                 }
             }
         }
@@ -82,6 +102,18 @@ impl VM {
         self.offset += 1;
 
         chunk.get_constant_value(index)
+    }
+
+    fn push(&mut self, value: Value) {
+        self.stack[self.stack_top] = value;
+        self.stack_top += 1;
+    }
+
+    fn pop(&mut self) -> Value {
+        // We don’t need to explicitly “remove” it from the array—moving stackTop
+        // down is enough to mark that slot as no longer in use.
+        self.stack_top -= 1;
+        self.stack[self.stack_top]
     }
 }
 
