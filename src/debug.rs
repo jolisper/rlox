@@ -18,19 +18,25 @@ pub fn dissassemble_instruction(chunk: &Chunk, offset: usize) -> usize {
     } else {
         print!("{:4} ", chunk.get_line(offset))
     }
+    fn opcode_name(opcode: OpCode) -> String {
+        format!("{:?}", opcode)
+    }
     match chunk.get(offset) {
-        OpCode::OpConstant => return constant_instruction("OP_CONSTANT", &chunk, offset),
-        OpCode::OpNegate => return simple_instruction("OP_NEGATE", offset),
-        OpCode::OpReturn => return simple_instruction("OP_RETURN", offset),
+        opcode @ OpCode::OpConstant => {
+            return constant_instruction(opcode_name(opcode), &chunk, offset)
+        }
+        opcode @ OpCode::OpNegate | opcode @ OpCode::OpReturn => {
+            return simple_instruction(opcode_name(opcode), offset)
+        }
     }
 }
 
-fn simple_instruction(name: &str, offset: usize) -> usize {
+fn simple_instruction(name: String, offset: usize) -> usize {
     println!("{} ", name);
     return offset + 1;
 }
 
-fn constant_instruction(name: &str, chunk: &Chunk, offset: usize) -> usize {
+fn constant_instruction(name: String, chunk: &Chunk, offset: usize) -> usize {
     let constant_index = chunk.get(offset + 1) as usize;
     print!("{:<16} {:4} '", name, constant_index);
     print_value(chunk.get_constant_value(constant_index));
