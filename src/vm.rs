@@ -69,16 +69,16 @@ impl VM {
             // implements that instruction’s semantics. This process is called
             // “decoding” or “dispatching” the instruction.
             match opcode {
-                OpCode::OpReturn => {
+                OpCode::OP_RETURN => {
                     debug::print_value(self.pop());
                     println!();
                     return InterpretResult::InterpretOk;
                 }
-                OpCode::OpNegate => {
+                OpCode::OP_NEGATE => {
                     let value = self.pop();
                     self.push(-value);
                 }
-                OpCode::OpConstant => {
+                OpCode::OP_CONSTANT => {
                     let constant = self.read_constant();
                     self.push(constant);
                 }

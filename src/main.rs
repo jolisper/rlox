@@ -10,11 +10,11 @@ fn main() {
     let mut c = chunk::init_chunk();
 
     let constant = chunk::add_constant(&mut c, 1.2);
-    chunk::write_chunk(&mut c, OpCode::OpConstant as u8, 123);
+    chunk::write_chunk(&mut c, OpCode::OP_CONSTANT as u8, 123);
     chunk::write_chunk(&mut c, constant as u8, 123);
-    chunk::write_chunk(&mut c, OpCode::OpNegate as u8, 123);
+    chunk::write_chunk(&mut c, OpCode::OP_NEGATE as u8, 123);
 
-    chunk::write_chunk(&mut c, OpCode::OpReturn as u8, 123);
+    chunk::write_chunk(&mut c, OpCode::OP_RETURN as u8, 123);
 
     vm.interpret(c);
 }

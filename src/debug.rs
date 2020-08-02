@@ -22,10 +22,10 @@ pub fn dissassemble_instruction(chunk: &Chunk, offset: usize) -> usize {
         format!("{:?}", opcode)
     }
     match chunk.get(offset) {
-        opcode @ OpCode::OpConstant => {
+        opcode @ OpCode::OP_CONSTANT => {
             return constant_instruction(opcode_name(opcode), &chunk, offset)
         }
-        opcode @ OpCode::OpNegate | opcode @ OpCode::OpReturn => {
+        opcode @ OpCode::OP_NEGATE | opcode @ OpCode::OP_RETURN => {
             return simple_instruction(opcode_name(opcode), offset)
         }
     }
