@@ -1,6 +1,7 @@
 use crate::chunk::{Chunk, OpCode};
 use crate::value::Value;
 
+#[allow(dead_code)]
 pub fn dissassemble_chunk(chunk: &Chunk, name: &str) {
     println!("== {} ==", name);
 

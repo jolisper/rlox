@@ -4,6 +4,7 @@ use crate::value::Value;
 
 const STACK_MAX: usize = 256;
 
+#[allow(dead_code)]
 pub enum InterpretResult {
     InterpretOk,
     InterpretCompileError,
@@ -124,5 +125,3 @@ impl VM {
 pub fn init_vm() -> VM {
     return VM::new();
 }
-
-pub fn free_vm() {}

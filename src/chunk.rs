@@ -27,6 +27,7 @@ pub struct Chunk {
 }
 
 impl Chunk {
+    #[allow(dead_code)]
     pub fn count(&self) -> usize {
         self.code.len()
     }
