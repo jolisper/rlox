@@ -5,6 +5,10 @@ use std::convert::From;
 #[allow(non_camel_case_types)]
 pub enum OpCode {
     OP_CONSTANT,
+    OP_ADD,
+    OP_SUBSTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE,
     OP_NEGATE,
     OP_RETURN,
 }
@@ -13,6 +17,10 @@ impl From<u8> for OpCode {
     fn from(byte: u8) -> Self {
         match byte {
             byte if byte == OpCode::OP_CONSTANT as u8 => OpCode::OP_CONSTANT,
+            byte if byte == OpCode::OP_ADD as u8 => OpCode::OP_ADD,
+            byte if byte == OpCode::OP_SUBSTRACT as u8 => OpCode::OP_SUBSTRACT,
+            byte if byte == OpCode::OP_MULTIPLY as u8 => OpCode::OP_MULTIPLY,
+            byte if byte == OpCode::OP_DIVIDE as u8 => OpCode::OP_DIVIDE,
             byte if byte == OpCode::OP_NEGATE as u8 => OpCode::OP_NEGATE,
             byte if byte == OpCode::OP_RETURN as u8 => OpCode::OP_RETURN,
             _ => panic!("Unkown opcode!"),

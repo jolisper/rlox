@@ -69,18 +69,30 @@ impl VM {
             // implements that instruction’s semantics. This process is called
             // “decoding” or “dispatching” the instruction.
             match opcode {
-                OpCode::OP_RETURN => {
-                    debug::print_value(self.pop());
-                    println!();
-                    return InterpretResult::InterpretOk;
+                OpCode::OP_CONSTANT => {
+                    let constant = self.read_constant();
+                    self.push(constant);
+                }
+                OpCode::OP_ADD => {
+                    self.binary_operator(|a, b| a + b);
+                }
+                OpCode::OP_SUBSTRACT => {
+                    self.binary_operator(|a, b| a - b);
+                }
+                OpCode::OP_MULTIPLY => {
+                    self.binary_operator(|a, b| a * b);
+                }
+                OpCode::OP_DIVIDE => {
+                    self.binary_operator(|a, b| a / b);
                 }
                 OpCode::OP_NEGATE => {
                     let value = self.pop();
                     self.push(-value);
                 }
-                OpCode::OP_CONSTANT => {
-                    let constant = self.read_constant();
-                    self.push(constant);
+                OpCode::OP_RETURN => {
+                    debug::print_value(self.pop());
+                    println!();
+                    return InterpretResult::InterpretOk;
                 }
             }
         }
@@ -107,6 +119,13 @@ impl VM {
         self.offset += 1;
 
         chunk.get_constant_value(index)
+    }
+
+    fn binary_operator<F: Fn(Value, Value) -> Value>(&mut self, f: F) {
+        let b = self.pop();
+        let a = self.pop();
+        let r = f(a, b);
+        self.push(r);
     }
 
     fn push(&mut self, value: Value) {

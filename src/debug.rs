@@ -25,9 +25,12 @@ pub fn dissassemble_instruction(chunk: &Chunk, offset: usize) -> usize {
         opcode @ OpCode::OP_CONSTANT => {
             return constant_instruction(opcode_name(opcode), &chunk, offset)
         }
-        opcode @ OpCode::OP_NEGATE | opcode @ OpCode::OP_RETURN => {
-            return simple_instruction(opcode_name(opcode), offset)
-        }
+        opcode @ OpCode::OP_ADD
+        | opcode @ OpCode::OP_SUBSTRACT
+        | opcode @ OpCode::OP_MULTIPLY
+        | opcode @ OpCode::OP_DIVIDE
+        | opcode @ OpCode::OP_NEGATE
+        | opcode @ OpCode::OP_RETURN => return simple_instruction(opcode_name(opcode), offset),
     }
 }
 
@@ -45,5 +48,5 @@ fn constant_instruction(name: String, chunk: &Chunk, offset: usize) -> usize {
 }
 
 pub fn print_value(value: Value) {
-    print!("{:?}", value);
+    print!("{:.6}", value);
 }
