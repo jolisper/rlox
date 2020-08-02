@@ -73,6 +73,10 @@ impl VM {
                     println!();
                     return InterpretResult::InterpretOk;
                 }
+                OpCode::OpNegate => {
+                    let value = self.pop();
+                    self.push(-value);
+                }
                 OpCode::OpConstant => {
                     let constant = self.read_constant();
                     self.push(constant);

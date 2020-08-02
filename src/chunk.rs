@@ -4,6 +4,7 @@ use std::convert::From;
 #[derive(Debug)]
 pub enum OpCode {
     OpConstant,
+    OpNegate,
     OpReturn,
 }
 
@@ -11,6 +12,7 @@ impl From<u8> for OpCode {
     fn from(byte: u8) -> Self {
         match byte {
             byte if byte == OpCode::OpConstant as u8 => OpCode::OpConstant,
+            byte if byte == OpCode::OpNegate as u8 => OpCode::OpNegate,
             byte if byte == OpCode::OpReturn as u8 => OpCode::OpReturn,
             _ => panic!("Unkown opcode!"),
         }

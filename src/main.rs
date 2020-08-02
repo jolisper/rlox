@@ -12,6 +12,7 @@ fn main() {
     let constant = chunk::add_constant(&mut c, 1.2);
     chunk::write_chunk(&mut c, OpCode::OpConstant as u8, 123);
     chunk::write_chunk(&mut c, constant as u8, 123);
+    chunk::write_chunk(&mut c, OpCode::OpNegate as u8, 123);
 
     chunk::write_chunk(&mut c, OpCode::OpReturn as u8, 123);
 

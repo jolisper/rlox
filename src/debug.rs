@@ -19,6 +19,7 @@ pub fn dissassemble_instruction(chunk: &Chunk, offset: usize) -> usize {
     }
     match chunk.get(offset) {
         OpCode::OpConstant => return constant_instruction("OP_CONSTANT", &chunk, offset),
+        OpCode::OpNegate => return simple_instruction("OP_NEGATE", offset),
         OpCode::OpReturn => return simple_instruction("OP_RETURN", offset),
     }
 }
