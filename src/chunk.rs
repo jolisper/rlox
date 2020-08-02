@@ -1,17 +1,28 @@
 use crate::value::{init_value_array, write_value_array, Value, ValueArray};
 use std::convert::From;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug)]
+#[allow(non_camel_case_types)]
 pub enum OpCode {
-    OpConstant,
-    OpReturn,
+    OP_CONSTANT,
+    OP_ADD,
+    OP_SUBSTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE,
+    OP_NEGATE,
+    OP_RETURN,
 }
 
 impl From<u8> for OpCode {
     fn from(byte: u8) -> Self {
         match byte {
-            byte if byte == OpCode::OpConstant as u8 => OpCode::OpConstant,
-            byte if byte == OpCode::OpReturn as u8 => OpCode::OpReturn,
+            byte if byte == OpCode::OP_CONSTANT as u8 => OpCode::OP_CONSTANT,
+            byte if byte == OpCode::OP_ADD as u8 => OpCode::OP_ADD,
+            byte if byte == OpCode::OP_SUBSTRACT as u8 => OpCode::OP_SUBSTRACT,
+            byte if byte == OpCode::OP_MULTIPLY as u8 => OpCode::OP_MULTIPLY,
+            byte if byte == OpCode::OP_DIVIDE as u8 => OpCode::OP_DIVIDE,
+            byte if byte == OpCode::OP_NEGATE as u8 => OpCode::OP_NEGATE,
+            byte if byte == OpCode::OP_RETURN as u8 => OpCode::OP_RETURN,
             _ => panic!("Unkown opcode!"),
         }
     }
@@ -25,6 +36,7 @@ pub struct Chunk {
 }
 
 impl Chunk {
+    #[allow(dead_code)]
     pub fn count(&self) -> usize {
         self.code.len()
     }
