@@ -46,7 +46,10 @@ impl Chunk {
     }
 
     pub fn get_line(&self, offset: usize) -> usize {
-        *self.lines.get(offset).unwrap()
+        *self
+            .lines
+            .get(offset)
+            .expect(&format!("No chunck ar offset: {}", offset))
     }
 
     pub fn get_constant_value(&self, offset: usize) -> f64 {

@@ -29,5 +29,5 @@ pub fn init_value_array() -> ValueArray {
 
 pub fn write_value_array(value_array: &mut ValueArray, value: Value) {
     let values = value_array.values.as_mut();
-    values.unwrap().push(value);
+    values.expect("Uninitialized value array!").push(value);
 }

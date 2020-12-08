@@ -1,4 +1,7 @@
 pub struct Scanner<'a> {
+    // In the C version the scanner use pointers to source code characters,
+    // in this Rust version the scanner has a source code reference and
+    // indexes to characters, avoiding to use unsafe raw pointers.
     pub source: &'a str,
     start: usize,
     current: usize,
@@ -10,6 +13,9 @@ pub struct Token {
     pub start: usize,
     pub length: usize,
     pub line: i32,
+    // C version force the meaning of start pointer using it as a pointer to
+    // error message, in this Rust version without raw pointers, an optional
+    // error message string is used instead.
     pub message: Option<String>,
 }
 
