@@ -1,10 +1,12 @@
 use crate::chunk::{Chunk, OpCode};
+use crate::compiler;
 use crate::debug;
 use crate::value::Value;
 
 const STACK_MAX: usize = 256;
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub enum InterpretResult {
     InterpretOk,
     InterpretCompileError,
@@ -42,9 +44,9 @@ impl VM {
         }
     }
 
-    pub fn interpret(&mut self, chunk: Chunk) -> InterpretResult {
-        self.chunk = Some(chunk);
-        return self.run();
+    pub fn interpret(&mut self, source: &str) -> InterpretResult {
+        compiler::compile(source);
+        return InterpretResult::InterpretOk;
     }
 
     fn run(&mut self) -> InterpretResult {
@@ -59,7 +61,10 @@ impl VM {
                     print!(" ]");
                 }
                 println!();
-                debug::dissassemble_instruction(&self.chunk.as_ref().unwrap(), self.offset);
+                debug::dissassemble_instruction(
+                    &self.chunk.as_ref().expect("Error getting chunk reference"),
+                    self.offset,
+                );
             }
 
             // The first byte of any instruction is the opcode.
